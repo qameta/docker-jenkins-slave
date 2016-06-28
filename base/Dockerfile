@@ -16,6 +16,10 @@ RUN \
   rm -rf /var/cache/oracle-jdk8-installer
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
+# Setup locale
+ENV LANG ru_RU.utf8
+RUN locale-gen $LANG
+
 ENV JENKINS_HOME /home/jenkins
 
 ARG user=jenkins
@@ -25,9 +29,8 @@ ARG gid=1000
 
 # Jenkins is run with user `jenkins`, uid = 1000
 # If you bind mount a volume from the host or a data container, ensure you use the same uid
-RUN groupadd -g ${gid} ${group} \
-    && useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user}
-RUN echo "jenkins:jenkins" | chpasswd
+RUN groupadd -g ${gid} ${group} && \
+    useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user}
 
 # Jenkins .ssh and .gnupg directory is a volume
 VOLUME /home/jenkins/.gnupg
