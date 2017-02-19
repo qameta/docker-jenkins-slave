@@ -4,6 +4,11 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends curl \
     && curl -sSL https://get.rvm.io | sudo bash -s stable --ruby
 
+# Setup locale
+RUN echo "export LC_ALL=en_US.UTF-8" >> ${JENKINS_HOME}/.bashrc
+RUN echo "export LANGUAGE=en_US:en" >> ${JENKINS_HOME}/.bashrc
+RUN echo "export LANG=en_US.UTF-8" >> ${JENKINS_HOME}/.bashrc
+
 RUN usermod -a -G rvm jenkins
 
 RUN /usr/local/rvm/bin/rvm alias create ruby ruby
