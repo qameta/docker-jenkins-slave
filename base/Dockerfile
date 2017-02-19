@@ -36,6 +36,9 @@ RUN groupadd -g ${gid} ${group} && \
 VOLUME ${JENKINS_HOME}/.gnupg
 VOLUME ${JENKINS_HOME}/.ssh
 
+RUN echo "export LC_CTYPE=\"en_US.UTF-8\"" >> /home/jenkins/.bashrc
+RUN echo "export LANG=\"en_US.UTF-8\"" >> /home/jenkins/.bashrc
+
 # Install a basic SSH server
 RUN \
   apt-get update && \
