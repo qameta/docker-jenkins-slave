@@ -4,11 +4,17 @@ FROM ubuntu:14.04
 ENV LANG en_US.utf8
 RUN locale-gen $LANG
 
-# Install git, devtools
+# Install devtools
 RUN \
   apt-get update && \
-  apt-get install -y -q --force-yes git && \
   apt-get install -y software-properties-common python-software-properties
+
+# Install git
+RUN \
+  apt-add-repository -y ppa:git-core/ppa && \
+  apt-get update && apt-get install git && \
+  rm -rf /var/lib/apt/lists/* && \
+  rm -rf /var/cache/git
 
 # Install oracle-java
 RUN \
@@ -18,6 +24,7 @@ RUN \
   apt-get install -y oracle-java8-installer && \
   rm -rf /var/lib/apt/lists/* && \
   rm -rf /var/cache/oracle-jdk8-installer
+
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 ENV JENKINS_HOME /home/jenkins
