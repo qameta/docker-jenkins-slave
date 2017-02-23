@@ -12,18 +12,15 @@ RUN \
 # Install git
 RUN \
   apt-add-repository -y ppa:git-core/ppa && \
-  apt-get update && apt-get install git && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/git
+  apt-get update && \
+  apt-get install -y git
 
 # Install oracle-java
 RUN \
   echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
   add-apt-repository -y ppa:webupd8team/java && \
   apt-get update && \
-  apt-get install -y oracle-java8-installer && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/oracle-jdk8-installer
+  apt-get install -y oracle-java8-installer
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
@@ -42,9 +39,6 @@ RUN groupadd -g ${gid} ${group} && \
 # Jenkins .ssh and .gnupg directory is a volume
 VOLUME ${JENKINS_HOME}/.gnupg
 VOLUME ${JENKINS_HOME}/.ssh
-
-RUN echo "export LC_CTYPE=\"en_US.UTF-8\"" >> /home/jenkins/.bashrc
-RUN echo "export LANG=\"en_US.UTF-8\"" >> /home/jenkins/.bashrc
 
 # Install a basic SSH server
 RUN \
